@@ -1,0 +1,23 @@
+server:
+  port: 8080 # ????
+
+
+spring:
+  application:
+    name: payment-demo # ????
+
+  jackson: #json????
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  datasource: #mysql?????
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/payment_demo? serverTimezone=GMT%2B8&characterEncoding=utf-8
+    username: root
+    password: root
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:com/xxx/pay/mapper/xml/*.xml
+
