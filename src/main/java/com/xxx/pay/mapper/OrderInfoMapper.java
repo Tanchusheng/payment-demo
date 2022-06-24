@@ -1,7 +1,7 @@
 package com.xxx.pay.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import generator.entity.OrderInfo;
+import com.xxx.pay.entity.OrderInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

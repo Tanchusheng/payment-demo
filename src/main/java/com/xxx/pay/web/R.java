@@ -1,6 +1,7 @@
 package com.xxx.pay.web;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
  * @version: 1.0
  **/
 @Data
+@Accessors(chain = true)
 public class R {
 
     private Integer code;
