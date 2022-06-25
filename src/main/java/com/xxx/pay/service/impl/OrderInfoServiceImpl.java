@@ -9,6 +9,7 @@ import com.xxx.pay.mapper.OrderInfoMapper;
 import com.xxx.pay.mapper.ProductMapper;
 import com.xxx.pay.service.OrderInfoService;
 import com.xxx.pay.util.OrderNoUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,6 +21,7 @@ import java.util.List;
  * @createDate 2022-06-22 23:07:48
  */
 @Service
+@Slf4j
 public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo>
         implements OrderInfoService {
 
@@ -81,6 +83,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     /**
      * 查询订单列表，并倒序查询
+     *
      * @return
      */
     @Override
@@ -88,5 +91,39 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<OrderInfo>()
                 .orderByDesc("create_time");
         return baseMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 根据订单编号更新订单状态
+     *
+     * @param orderNo
+     * @param orderStatus
+     */
+    @Override
+    public void updateStatusByOrderNo(String orderNo, OrderStatus orderStatus) {
+        log.info("更新订单状态 ===> {}", orderStatus.getType());
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_no", orderNo);
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setOrderStatus(orderStatus.getType());
+        baseMapper.update(orderInfo, queryWrapper);
+    }
+
+    /**
+     * 根据订单号获取订单状态
+     *
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public String getOrderStatus(String orderNo) {
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_no", orderNo);
+        OrderInfo orderInfo = baseMapper.selectOne(queryWrapper);
+        //防止被删除的订单的回调通知的调用
+        if (orderInfo == null) {
+            return null;
+        }
+        return orderInfo.getOrderStatus();
     }
 }

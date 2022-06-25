@@ -2,6 +2,7 @@ package com.xxx.pay.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xxx.pay.entity.OrderInfo;
+import com.xxx.pay.enums.OrderStatus;
 
 import java.util.List;
 
@@ -31,4 +32,18 @@ public interface OrderInfoService extends IService<OrderInfo> {
      * @return
      */
     List<OrderInfo> listOrderByCreateTimeDesc();
+
+    /**
+     * 更新订单状态
+     * @param orderNo
+     * @param orderStatus
+     */
+    void updateStatusByOrderNo(String orderNo, OrderStatus orderStatus);
+
+    /**
+     * 根据订单号获取订单状态
+     * @param orderNo
+     * @return
+     */
+    String getOrderStatus(String orderNo);
 }

@@ -1,5 +1,6 @@
 package com.xxx.pay.service;
 
+import java.security.GeneralSecurityException;
 import java.util.Map;
 
 /**
@@ -18,4 +19,14 @@ public interface WxPayService {
      * @throws Exception
      */
     Map<String, Object> nativePay(Long productId) throws Exception;
+
+    /**
+     * 处理订单
+     * @param bodyMap
+     */
+    void processOrder(Map<String, Object> bodyMap) throws GeneralSecurityException;
+
+    void cancelOrder(String orderNo) throws Exception;
+
+    String queryOrder(String orderNo) throws Exception;
 }
