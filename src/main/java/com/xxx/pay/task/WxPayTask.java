@@ -1,7 +1,9 @@
 package com.xxx.pay.task;
 
 import com.xxx.pay.entity.OrderInfo;
+import com.xxx.pay.entity.RefundInfo;
 import com.xxx.pay.service.OrderInfoService;
+import com.xxx.pay.service.RefundInfoService;
 import com.xxx.pay.service.WxPayService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,6 +28,9 @@ public class WxPayTask {
     @Resource
     private WxPayService wxPayService;
 
+    @Resource
+    private RefundInfoService refundInfoService;
+
     /**
      * 测试
      * (cron="秒 分 时 日 月 周")
@@ -44,7 +49,7 @@ public class WxPayTask {
      * 从第0秒开始每隔30秒执行1次，查询创建超过5分钟，并且未支付的订单
      */
     @Scheduled(cron = "0/30 * * * * ?")
-    public void orderConfirm() {
+    public void orderConfirm() throws Exception {
         log.info("orderConfirm 被执行......");
         List<OrderInfo> orderInfoList = orderInfoService.getNoPayOrderByDuration(5);
         for (OrderInfo orderInfo : orderInfoList) {
@@ -54,4 +59,14 @@ public class WxPayTask {
             wxPayService.checkOrderStatus(orderNo);
         }
     }
-}
+
+    public void refundConfirm() throws Exception {
+        log.info("refundConfirm 被执行......");
+        //找出申请退款超过5分钟并且未成功的退款单
+        List<RefundInfo> refundInfoList = refundInfoService.getNoRefundOrderByDuration(5);
+        for (RefundInfo refundInfo : refundInfoList) {
+            String refundNo = refundInfo.getRefundNo();
+            log.warn("超时未退款的退款单号 ===> {}", refundNo);
+            //核实订单状态：调用微信支付查询退款接口
+            wxPayService.checkRefundStatus(refundNo); } }
+    }

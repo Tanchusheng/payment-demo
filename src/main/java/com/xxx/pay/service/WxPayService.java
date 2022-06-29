@@ -14,6 +14,7 @@ public interface WxPayService {
 
     /**
      * 创建订单，调用Native支付接口
+     *
      * @param productId
      * @return
      * @throws Exception
@@ -22,6 +23,7 @@ public interface WxPayService {
 
     /**
      * 处理订单
+     *
      * @param bodyMap
      */
     void processOrder(Map<String, Object> bodyMap) throws GeneralSecurityException;
@@ -31,4 +33,16 @@ public interface WxPayService {
     String queryOrder(String orderNo) throws Exception;
 
     void checkOrderStatus(String orderNo) throws Exception;
+
+    void refund(String orderNo, String reason) throws Exception;
+
+    String queryRefund(String refundNo) throws Exception;
+
+    void checkRefundStatus(String refundNo) throws Exception;
+
+    void processRefund(Map<String, Object> bodyMap) throws Exception;
+
+    String queryBill(String billDate, String type) throws Exception;
+
+    String downloadBill(String billDate, String type) throws Exception;
 }
