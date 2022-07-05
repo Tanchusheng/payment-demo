@@ -40,7 +40,7 @@ public class WxPayTask {
      * 1,2,3：第1、2、3秒执行
      * ?：不指定，若指定日期，则不指定周，反之同理
      */
-    @Scheduled(cron = "0/3 * * * * ?")
+//    @Scheduled(cron = "0/3 * * * * ?")
     public void task1() {
         log.info("task1 执行");
     }
